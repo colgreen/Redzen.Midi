@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F60D8B7B-2D2E-4B94-A736-3783FFE1A25C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RedZen.Midi</RootNamespace>
+    <AssemblyName>Redzen.Midi</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Redzen.Midi.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Redzen.Midi.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Redzen, Version=1.0.5.0, Culture=neutral, PublicKeyToken=182843a4be0a74f7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Redzen.1.0.5.0\lib\net40\Redzen.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Channel.cs" />
+    <Compile Include="ChannelExtensions.cs" />
+    <Compile Include="Control.cs" />
+    <Compile Include="ControlExtensions.cs" />
+    <Compile Include="Devices\DeviceBase.cs" />
+    <Compile Include="Devices\DeviceException.cs" />
+    <Compile Include="Devices\InputDevices.cs" />
+    <Compile Include="Devices\MidiInCallbackData.cs" />
+    <Compile Include="Devices\OutputDevices.cs" />
+    <Compile Include="Instrument.cs" />
+    <Compile Include="InstrumentExtensions.cs" />
+    <Compile Include="MidiConsts.cs" />
+    <Compile Include="NoteSets\NoteSet.cs" />
+    <Compile Include="NoteSets\NoteSetUtils.cs" />
+    <Compile Include="Notes\AkaiXR20.cs" />
+    <Compile Include="Notes\NordDrum2.cs" />
+    <Compile Include="Win32\LongMsg.cs" />
+    <Compile Include="Messages\ChannelMessage.cs" />
+    <Compile Include="Messages\ControlChangeMessage.cs" />
+    <Compile Include="Messages\Message.cs" />
+    <Compile Include="Messages\NoteMessage.cs" />
+    <Compile Include="Messages\NoteOffMessage.cs" />
+    <Compile Include="Messages\NoteOnMessage.cs" />
+    <Compile Include="Messages\PitchBendMessage.cs" />
+    <Compile Include="Messages\ProgramChangeMessage.cs" />
+    <Compile Include="Messages\RealTimeMessage.cs" />
+    <Compile Include="Messages\RealTimeMessageType.cs" />
+    <Compile Include="Messages\SysExMessage.cs" />
+    <Compile Include="MidiUtils.cs" />
+    <Compile Include="Notes\Percussion.cs" />
+    <Compile Include="Devices\InputDevice.cs" />
+    <Compile Include="Devices\OutputDevice.cs" />
+    <Compile Include="Notes\Pitch.cs" />
+    <Compile Include="Notes\Volcabeats.cs" />
+    <Compile Include="Sequencing\ExternalMidiClock.cs" />
+    <Compile Include="Sequencing\InternalMidiClock.cs" />
+    <Compile Include="Sequencing\LiveNote.cs" />
+    <Compile Include="Sequencing\MidiClock.cs" />
+    <Compile Include="Sequencing\Sequence.cs" />
+    <Compile Include="Sequencing\SequenceNote.cs" />
+    <Compile Include="Sequencing\Sequencer.cs" />
+    <Compile Include="Sequencing\SequenceGenerator.cs" />
+    <Compile Include="Win32\ShortMsg.cs" />
+    <Compile Include="Win32\Win32API.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
