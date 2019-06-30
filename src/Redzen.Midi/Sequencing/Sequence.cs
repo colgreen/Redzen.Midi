@@ -13,19 +13,46 @@ namespace Redzen.Midi.Sequencing
     {
         #region Instance Fields
 
-        readonly Channel _chan;
         readonly int _lengthInTicks;
 
         // Note. There can be multiple notes assigned to each time slot, hence there is a List of notes at each timeslot.
         readonly List<SequenceNote>[] _noteSeq;
 
-        int _pos;
-        bool _isEnabled = true;
-
         /// <summary>
-        /// Supplemetray info assocatied with the sequence.
+        /// Supplemetray info associated with the sequence.
         /// </summary>
         public Dictionary<string,string> InfoById = new Dictionary<string, string>();
+
+        #endregion
+
+        #region Auto Properties / Properties
+
+        /// <summary>
+        /// The MIDI channel the sequence messages will be sent to.
+        /// </summary>
+        public Channel Channel { get; }
+
+        /// <summary>
+        /// The sequence length (in MIDI clock ticks).
+        /// </summary>
+        public int Length => _noteSeq.Length;
+
+        /// <summary>
+        /// Get the notes assigned to the specified step/slot in the sequence
+        /// </summary>
+        /// <param name="idx">The step/slot.</param>
+        /// <returns>A list of notes assigned to the step/slot in the sequence.</returns>
+        public List<SequenceNote> this[int idx] => _noteSeq[idx];
+
+        /// <summary>
+        /// The current position of the sequence.
+        /// </summary>
+        public int Position { get; set; }
+
+        /// <summary>
+        /// Indicates if the sequence is currently enabled.
+        /// </summary>
+        public bool IsEnabled { get; set; }
 
         #endregion
 
@@ -39,57 +66,9 @@ namespace Redzen.Midi.Sequencing
         /// So e.g. if you require a 1 minute sequence at 120 bpm then the length should be 120*24 = 2880.</param>
         public Sequence(Channel chan, int lengthInTicks)
         {
-            _chan = chan;
-            _lengthInTicks = lengthInTicks;// * __clocksPerBeat;
+            this.Channel = chan;
+            _lengthInTicks = lengthInTicks;
             _noteSeq = new List<SequenceNote>[_lengthInTicks];
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// The MIDI channel the sequence messages will be sent to.
-        /// </summary>
-        public Channel Channel
-        {
-            get { return _chan; }
-        }
-
-        /// <summary>
-        /// The sequence length (in MIDI clock ticks).
-        /// </summary>
-        public int Length
-        {
-            get { return _noteSeq.Length; }
-        }
-
-        /// <summary>
-        /// Get the notes assigned to the specified step/slot in the sequence
-        /// </summary>
-        /// <param name="idx">The step/slot.</param>
-        /// <returns>A list of notes assigned to the step/slot in the sequence.</returns>
-        public List<SequenceNote> this[int idx]
-        {
-            get { return _noteSeq[idx]; }
-        }
-
-        /// <summary>
-        /// The current position of the sequence.
-        /// </summary>
-        public int Position
-        {
-            get { return _pos; }
-            set { _pos = value; }
-        }
-
-        /// <summary>
-        /// Indicates if the sequence is currently enabled.
-        /// </summary>
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set { _isEnabled = value; }
         }
 
         #endregion
