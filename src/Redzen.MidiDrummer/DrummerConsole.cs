@@ -4,6 +4,8 @@ using Redzen.Midi;
 using Redzen.Midi.Devices;
 using Redzen.Midi.NoteSets;
 using Redzen.Midi.Sequencing;
+using Redzen.Numerics;
+using Redzen.Sorting;
 using RedZen.Midi;
 using RedzenMidiDrummer.Patterns;
 
@@ -27,6 +29,8 @@ namespace RedzenMidiDrummer
         SequenceGenerator _seqGen = new SequenceGenerator();
 
         Dictionary<string,NoteSet> _noteSetDict;
+
+        XorShiftRandom _rng = new XorShiftRandom();
 
         #endregion
 
@@ -132,6 +136,8 @@ namespace RedzenMidiDrummer
                     Console.WriteLine($"patternNotes = {Utils.ToString(_patternNoteSet)}");
                     return true;
                 case '1':
+                    return HandleCmd_AddPattern(ch);
+                case '2':
                     return HandleCmd_AddPattern(ch);
                 case 'h':
                     PrintCommandHelp();
@@ -245,8 +251,9 @@ namespace RedzenMidiDrummer
                 return true;
             }
 
-
             List<int> noteList = new List<int>(_patternNoteSet);
+            SortUtils.Shuffle(noteList, _rng);
+
             int noteCount = noteList.Count;
 
             int patIdx = 0;
@@ -263,7 +270,10 @@ namespace RedzenMidiDrummer
 
                 _sequencer.AddSequence(seq);
                 Console.WriteLine(ToString(seq, _sequencer.SequenceList.Count-1));
-                patIdx++;
+
+                if(patIdx++ == noteCount) {
+                    break;
+                };
             }
 
             return true;
