@@ -11,7 +11,7 @@ namespace Redzen.Midi.Devices
     {
         #region Static Fields
 
-        static object __lockObj = new object();
+        static readonly object __lockObj = new object();
         static OutputDevice[] __installedDevices = null;
 
         #endregion

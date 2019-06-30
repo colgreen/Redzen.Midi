@@ -7,8 +7,19 @@ namespace Redzen.Midi.Messages
     /// </summary>
     public class ControlChangeMessage : ChannelMessage
     {
-        readonly Control _control;
-        readonly int _value;
+        #region Auto Properties
+
+        /// <summary>
+        /// Control type.
+        /// </summary>
+        public Control Control { get; }
+
+        /// <summary>
+        /// Control value.
+        /// </summary>
+        public int Value { get; }
+
+        #endregion
 
         #region Constructor
 
@@ -25,22 +36,9 @@ namespace Redzen.Midi.Messages
             if(value < 0 || value > 127) {
                 throw new ArgumentOutOfRangeException("control");
             }
-            _control = control;
-            _value = value;
+            this.Control = control;
+            this.Value = value;
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Control type.
-        /// </summary>
-        public Control Control { get { return _control; } }
-        /// <summary>
-        /// Control value.
-        /// </summary>
-        public int Value { get { return _value; } }
 
         #endregion
     }

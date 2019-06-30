@@ -4,7 +4,6 @@ using Redzen.Midi;
 using Redzen.Midi.Devices;
 using Redzen.Midi.NoteSets;
 using Redzen.Midi.Sequencing;
-using Redzen.Numerics;
 using Redzen.Random;
 using Redzen.Sorting;
 using RedZen.Midi;

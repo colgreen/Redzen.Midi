@@ -38,7 +38,7 @@ namespace Redzen.Midi.Win32
             channel = (Channel)((int)dwParam1 & 0x0f);
             noteId = (((int)dwParam1 & 0xff00) >> 8);
             velocity = (((int)dwParam1 & 0xff0000) >> 16);
-            timestamp = (UInt32)dwParam2;
+            timestamp = (uint)dwParam2;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Redzen.Midi.Win32
         /// <param name="velocity">Note velocity.</param>
         /// <returns>A value that can be passed to midiOutShortMsg.</returns>
         /// <exception cref="ArgumentOutOfRangeException">noteId is not in MIDI range.</exception>
-        public static UInt32 EncodeNoteOn(Channel channel, int noteId, int velocity)
+        public static uint EncodeNoteOn(Channel channel, int noteId, int velocity)
         {
             channel.Validate();
             if(!MidiUtils.IsInMidiRange(noteId)) {
@@ -58,7 +58,7 @@ namespace Redzen.Midi.Win32
             if(velocity < 0 || velocity > 127) {
                 throw new ArgumentOutOfRangeException("Velocity is out of range.");
             }
-            return (UInt32)(0x90 | ((int)channel) | (noteId << 8) | (velocity << 16));
+            return (uint)(0x90 | ((int)channel) | (noteId << 8) | (velocity << 16));
         }
 
         #endregion
@@ -85,7 +85,7 @@ namespace Redzen.Midi.Win32
         /// <param name="velocity">Note velocity.</param>
         /// <param name="timestamp">Note timestamp.</param>
         public static void DecodeNoteOff(UIntPtr dwParam1, UIntPtr dwParam2,
-            out Channel channel, out int noteId, out int velocity, out UInt32 timestamp)
+            out Channel channel, out int noteId, out int velocity, out uint timestamp)
         {
             if(!IsNoteOff(dwParam1, dwParam2)) {
                 throw new ArgumentException("Not a Note Off message.");
@@ -93,7 +93,7 @@ namespace Redzen.Midi.Win32
             channel = (Channel)((int)dwParam1 & 0x0f);
             noteId = ((int)dwParam1 & 0xff00) >> 8;
             velocity = (((int)dwParam1 & 0xff0000) >> 16);
-            timestamp = (UInt32)dwParam2;
+            timestamp = (uint)dwParam2;
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Redzen.Midi.Win32
         /// <param name="noteId">Note ID.</param>
         /// <param name="velocity">Note velocity.</param>
         /// <returns>A value that can be passed to midiOutShortMsg.</returns>
-        public static UInt32 EncodeNoteOff(Channel channel, int noteId, int velocity)
+        public static uint EncodeNoteOff(Channel channel, int noteId, int velocity)
         {
             channel.Validate();
             if(!MidiUtils.IsInMidiRange(noteId)) {
@@ -112,7 +112,7 @@ namespace Redzen.Midi.Win32
             if(velocity < 0 || velocity > 127) {
                 throw new ArgumentOutOfRangeException("Velocity is out of range.");
             }
-            return (UInt32)(0x80 | ((int)channel) | (noteId << 8) | (velocity << 16));
+            return (uint)(0x80 | ((int)channel) | (noteId << 8) | (velocity << 16));
         }
 
         #endregion
@@ -139,7 +139,7 @@ namespace Redzen.Midi.Win32
         /// <param name="value">Control value.</param>
         /// <param name="timestamp">Message timestamp.</param>
         public static void DecodeControlChange(UIntPtr dwParam1, UIntPtr dwParam2,
-            out Channel channel, out Control control, out int value, out UInt32 timestamp)
+            out Channel channel, out Control control, out int value, out uint timestamp)
         {
             if(!IsControlChange(dwParam1, dwParam2)) {
                 throw new ArgumentException("Not a control message.");
@@ -147,7 +147,7 @@ namespace Redzen.Midi.Win32
             channel = (Channel)((int)dwParam1 & 0x0f);
             control = (Control)(((int)dwParam1 & 0xff00) >> 8);
             value = (((int)dwParam1 & 0xff0000) >> 16);
-            timestamp = (UInt32)dwParam2;
+            timestamp = (uint)dwParam2;
         }
 
         /// <summary>
@@ -157,14 +157,14 @@ namespace Redzen.Midi.Win32
         /// <param name="control">Control type.</param>
         /// <param name="value">Control value.</param>
         /// <returns>A value that can be passed to midiOutShortMsg.</returns>
-        public static UInt32 EncodeControlChange(Channel channel, Control control, int value)
+        public static uint EncodeControlChange(Channel channel, Control control, int value)
         {
             channel.Validate();
             control.Validate();
             if(value < 0 || value > 127) {
                 throw new ArgumentOutOfRangeException("Value is out of range.");
             }
-            return (UInt32)(0xB0 | (int)(channel) | ((int)control << 8) | (value << 16));
+            return (uint)(0xB0 | (int)(channel) | ((int)control << 8) | (value << 16));
         }
 
         #endregion
@@ -190,14 +190,14 @@ namespace Redzen.Midi.Win32
         /// <param name="instrument">Instrument type.</param>
         /// <param name="timestamp">Note timestamp.</param>
         public static void DecodeProgramChange(UIntPtr dwParam1, UIntPtr dwParam2,
-            out Channel channel, out Instrument instrument, out UInt32 timestamp)
+            out Channel channel, out Instrument instrument, out uint timestamp)
         {
             if(!IsProgramChange(dwParam1, dwParam2)) {
                 throw new ArgumentException("Not a program change message.");
             }
             channel = (Channel)((int)dwParam1 & 0x0f);
             instrument = (Instrument)(((int)dwParam1 & 0xff00) >> 8);
-            timestamp = (UInt32)dwParam2;
+            timestamp = (uint)dwParam2;
         }
 
         /// <summary>
@@ -206,11 +206,11 @@ namespace Redzen.Midi.Win32
         /// <param name="channel">MIDI channel.</param>
         /// <param name="instrument">Instrument type.</param>
         /// <returns>A value that can be passed to midiOutShortMsg.</returns>
-        public static UInt32 EncodeProgramChange(Channel channel, Instrument instrument)
+        public static uint EncodeProgramChange(Channel channel, Instrument instrument)
         {
             channel.Validate();
             instrument.Validate();
-            return (UInt32)(0xC0 | (int)(channel) | ((int)instrument << 8));
+            return (uint)(0xC0 | (int)(channel) | ((int)instrument << 8));
         }
 
         #endregion
@@ -243,7 +243,7 @@ namespace Redzen.Midi.Win32
             }
             channel = (Channel)((int)dwParam1 & 0x0f);
             value = ((((int)dwParam1 >> 9) & 0x3f80) | (((int)dwParam1 >> 8) & 0x7f));
-            timestamp = (UInt32)dwParam2;
+            timestamp = (uint)dwParam2;
         }
 
         /// <summary>
@@ -252,13 +252,13 @@ namespace Redzen.Midi.Win32
         /// <param name="channel">The channel.</param>
         /// <param name="value">The pitch bend value; 0..16383, 8192 is centered.</param>
         /// <returns>A value that can be passed to midiOutShortMsg.</returns>
-        public static UInt32 EncodePitchBend(Channel channel, int value)
+        public static uint EncodePitchBend(Channel channel, int value)
         {
             channel.Validate();
             if(value < 0 || value > 16383) {
                 throw new ArgumentOutOfRangeException("Value is out of range.");
             }
-            return (UInt32)(0xE0 | (int)(channel) | ((value & 0x7f) << 8) |
+            return (uint)(0xE0 | (int)(channel) | ((value & 0x7f) << 8) |
                 ((value & 0x3f80) << 9));
         }
 
@@ -282,9 +282,10 @@ namespace Redzen.Midi.Win32
         /// <param name="dwParam1">The dwParam1 arg passed to MidiInProc.</param>
         /// <param name="dwParam2">The dwParam2 arg passed to MidiInProc.</param>
         /// <param name="timestamp">Message timestamp.</param>
-        public static void DecodeRealTime(UIntPtr dwParam1, UIntPtr dwParam2,
-                                          out RealTimeMessageType msgType, 
-                                          out UInt32 timestamp)
+        public static void DecodeRealTime(
+            UIntPtr dwParam1, UIntPtr dwParam2,
+            out RealTimeMessageType msgType, 
+            out uint timestamp)
         {
             if(!IsRealTime(dwParam1, dwParam2)) {
                 throw new ArgumentException("Not a real time message.");
@@ -318,7 +319,7 @@ namespace Redzen.Midi.Win32
                 default:
                     throw new ArgumentException("Invalid realtime message.");
             }
-            timestamp = (UInt32)dwParam2;
+            timestamp = (uint)dwParam2;
         }
 
         #endregion

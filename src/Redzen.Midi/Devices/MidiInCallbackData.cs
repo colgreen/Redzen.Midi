@@ -3,7 +3,6 @@ using Redzen.Midi.Win32;
 
 namespace Redzen.Midi.Devices
 {
-
     #pragma warning disable
 
     public class MidiInCallbackData

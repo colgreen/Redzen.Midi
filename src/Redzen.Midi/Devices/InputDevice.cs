@@ -20,23 +20,23 @@ namespace Redzen.Midi.Devices
         readonly object _lockObj = new object();
 
         // A list of pointers to all buffers created for handling Long Messages.
-        List<IntPtr> _longMsgBuffers = new List<IntPtr>();
+        readonly List<IntPtr> _longMsgBuffers = new List<IntPtr>();
         bool _isClosing = false;
         bool _terminateMessageThread = false;
         bool _isReceiving;
 
         // A queue for buffering received MIDI messages.
-        BlockingCollection<MidiInCallbackData> _msgQueue = new BlockingCollection<MidiInCallbackData>();
+        readonly BlockingCollection<MidiInCallbackData> _msgQueue = new BlockingCollection<MidiInCallbackData>();
 
         #endregion
 
         #region Delegates
 
         /// <summary>Note On message received delegate.</summary>
-        public delegate void NoteOnHandler(NoteOnMessage msg);
+        public delegate void NoteOnHandler(NoteMessage msg);
 
         /// <summary>Note Off message received delegate.</summary>
-        public delegate void NoteOffHandler(NoteOffMessage msg);
+        public delegate void NoteOffHandler(NoteMessage msg);
 
         /// <summary>Control Change message received delegate.</summary>
         public delegate void ControlChangeHandler(ControlChangeMessage msg);
@@ -351,16 +351,14 @@ namespace Redzen.Midi.Devices
             Channel channel;
             int noteId;
             int velocity;
-            Control control;
             int value;
-            Instrument instrument;
-            UInt32 win32Timestamp;
+            uint win32Timestamp;
             if(ShortMsg.IsNoteOn(dwParam1, dwParam2))
             {
                 if(null != this.NoteOn)
                 {
                     ShortMsg.DecodeNoteOn(dwParam1, dwParam2, out channel, out noteId, out velocity, out win32Timestamp);
-                    NoteOn(new NoteOnMessage(channel, noteId, velocity));
+                    NoteOn(new NoteMessage(channel, true, noteId, velocity));
                 }
             }
             else if(ShortMsg.IsNoteOff(dwParam1, dwParam2))
@@ -369,14 +367,14 @@ namespace Redzen.Midi.Devices
                 {
                     ShortMsg.DecodeNoteOff(dwParam1, dwParam2, out channel, out noteId,
                                             out velocity, out win32Timestamp);
-                    NoteOff(new NoteOffMessage(channel, noteId, velocity));
+                    NoteOff(new NoteMessage(channel, false, noteId, velocity));
                 }
             }
             else if(ShortMsg.IsControlChange(dwParam1, dwParam2))
             {
                 if(null != this.ControlChange)
                 {
-                    ShortMsg.DecodeControlChange(dwParam1, dwParam2, out channel, out control, out value, out win32Timestamp);
+                    ShortMsg.DecodeControlChange(dwParam1, dwParam2, out channel, out Control control, out value, out win32Timestamp);
                     ControlChange(new ControlChangeMessage(channel, control, value));
                 }
             }
@@ -384,7 +382,7 @@ namespace Redzen.Midi.Devices
             {
                 if(null != this.ProgramChange)
                 {
-                    ShortMsg.DecodeProgramChange(dwParam1, dwParam2, out channel, out instrument, out win32Timestamp);
+                    ShortMsg.DecodeProgramChange(dwParam1, dwParam2, out channel, out Instrument instrument, out win32Timestamp);
                     ProgramChange(new ProgramChangeMessage(channel, instrument));
                 }
             }
@@ -415,14 +413,13 @@ namespace Redzen.Midi.Devices
 
         private void InputCallback_LongData(UIntPtr dwParam1, UIntPtr dwParam2)
         {
-            Byte[] data;
-            UInt32 win32Timestamp;
             if(LongMsgUtils.IsSysEx(dwParam1, dwParam2))
             {
                 if(null != this.SysEx)
                 {
-                    LongMsgUtils.DecodeSysEx(dwParam1, dwParam2, out data, out win32Timestamp);
-                    if(0 != data.Length) {
+                    LongMsgUtils.DecodeSysEx(dwParam1, dwParam2, out byte[] data, out uint win32Timestamp);
+                    if(0 != data.Length)
+                    {
                         SysEx(new SysExMessage(data));
                     }
 
@@ -446,11 +443,13 @@ namespace Redzen.Midi.Devices
         {
             //add a buffer so we can receive SysEx messages
             IntPtr ptr;
-            UInt32 size = (UInt32)System.Runtime.InteropServices.Marshal.SizeOf(typeof(Win32API.MIDIHDR));
-            Win32API.MIDIHDR header = new Win32API.MIDIHDR();
-            header.lpData = System.Runtime.InteropServices.Marshal.AllocHGlobal(4096);
-            header.dwBufferLength = 4096;
-            header.dwFlags = 0;
+            uint size = (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(Win32API.MIDIHDR));
+            Win32API.MIDIHDR header = new Win32API.MIDIHDR
+            {
+                lpData = System.Runtime.InteropServices.Marshal.AllocHGlobal(4096),
+                dwBufferLength = 4096,
+                dwFlags = 0
+            };
 
             try
             {
@@ -501,7 +500,7 @@ namespace Redzen.Midi.Devices
         private bool DestroyLongMsgBuffer(UIntPtr ptr)
         {
             IntPtr newPtr = unchecked((IntPtr)(long)(ulong)ptr);
-            UInt32 size = (UInt32)System.Runtime.InteropServices.Marshal.SizeOf(typeof(Win32API.MIDIHDR));
+            uint size = (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(Win32API.MIDIHDR));
             CheckReturnCode(Win32API.midiInUnprepareHeader(_handle, newPtr, size));
 
             Win32API.MIDIHDR header = (Win32API.MIDIHDR)System.Runtime.InteropServices.Marshal.PtrToStructure(newPtr, typeof(Win32API.MIDIHDR));

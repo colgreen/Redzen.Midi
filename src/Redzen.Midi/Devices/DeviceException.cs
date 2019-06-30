@@ -11,6 +11,8 @@ namespace Redzen.Midi.Devices
         /// Constructs exception with a specific error message.
         /// </summary>
         /// <param name="message"></param>
-        public DeviceException(string message) { }
+        public DeviceException(string message) 
+            : base(message) 
+        {}
     }
 }

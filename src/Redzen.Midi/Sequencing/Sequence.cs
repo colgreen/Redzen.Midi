@@ -13,11 +13,11 @@ namespace Redzen.Midi.Sequencing
     {
         #region Instance Fields
 
-        Channel _chan;
-        int _lengthInTicks;
+        readonly Channel _chan;
+        readonly int _lengthInTicks;
 
         // Note. There can be multiple notes assigned to each time slot, hence there is a List of notes at each timeslot.
-        List<SequenceNote>[] _noteSeq;
+        readonly List<SequenceNote>[] _noteSeq;
 
         int _pos;
         bool _isEnabled = true;

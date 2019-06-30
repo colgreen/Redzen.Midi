@@ -29,7 +29,7 @@ namespace Redzen.Midi.Win32
         /// <summary>
         /// Max length of a manufacturer name in the Win32 API.
         /// </summary>
-        public const UInt32 MAXPNAMELEN = 32;
+        public const uint MAXPNAMELEN = 32;
 
         /// <summary>
         /// Status type returned from most functions in the Win32 API.
@@ -172,15 +172,15 @@ namespace Redzen.Midi.Win32
         [StructLayout(LayoutKind.Sequential)]
         public struct MIDIOUTCAPS
         {
-            public UInt16 wMid;
-            public UInt16 wPid;
-            public UInt32 vDriverVersion;
+            public ushort wMid;
+            public ushort wPid;
+            public uint vDriverVersion;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = (int)MAXPNAMELEN)]
             public string szPname;
             public MidiDeviceType wTechnology;
-            public UInt16 wVoices;
-            public UInt16 wNotes;
-            public UInt16 wChannelMask;
+            public ushort wVoices;
+            public ushort wNotes;
+            public ushort wChannelMask;
             public MidiExtraFeatures dwSupport;
         }
 
@@ -191,12 +191,12 @@ namespace Redzen.Midi.Win32
         [StructLayout(LayoutKind.Sequential)]
         public struct MIDIINCAPS
         {
-            public UInt16 wMid;
-            public UInt16 wPid;
-            public UInt32 vDriverVersion;
+            public ushort wMid;
+            public ushort wPid;
+            public uint vDriverVersion;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = (int)MAXPNAMELEN)]
             public string szPname;
-            public UInt32 dwSupport;
+            public uint dwSupport;
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace Redzen.Midi.Win32
         /// </summary>
         /// Win32 docs: http://msdn.microsoft.com/en-us/library/ms711627(VS.85).aspx
         [DllImport("winmm.dll", SetLastError = true)]
-        public static extern UInt32 midiOutGetNumDevs();
+        public static extern uint midiOutGetNumDevs();
 
         /// <summary>
         /// Fills in the capabilities struct for a specific output device.
@@ -240,7 +240,7 @@ namespace Redzen.Midi.Win32
         public static MMRESULT midiOutGetDevCaps(UIntPtr uDeviceID, out MIDIOUTCAPS caps)
         {
             return midiOutGetDevCaps(uDeviceID, out caps,
-                (UInt32)Marshal.SizeOf(typeof(MIDIOUTCAPS)));
+                (uint)Marshal.SizeOf(typeof(MIDIOUTCAPS)));
         }
 
         /// <summary>
@@ -328,7 +328,7 @@ namespace Redzen.Midi.Win32
         /// </summary>
         /// Win32 docs: http://msdn.microsoft.com/en-us/library/ms711608(VS.85).aspx
         [DllImport("winmm.dll", SetLastError = true)]
-        public static extern UInt32 midiInGetNumDevs();
+        public static extern uint midiInGetNumDevs();
 
         /// <summary>
         /// Fills in the capabilities struct for a specific input device.
@@ -339,7 +339,7 @@ namespace Redzen.Midi.Win32
         public static MMRESULT midiInGetDevCaps(UIntPtr uDeviceID, out MIDIINCAPS caps)
         {
             return midiInGetDevCaps(uDeviceID, out caps,
-                (UInt32)Marshal.SizeOf(typeof(MIDIINCAPS)));
+                (uint)Marshal.SizeOf(typeof(MIDIINCAPS)));
         }
 
         /// <summary>
@@ -431,7 +431,7 @@ namespace Redzen.Midi.Win32
 
         [DllImport("winmm.dll", SetLastError = true)]
         private static extern MMRESULT midiOutGetDevCaps(UIntPtr uDeviceID, out MIDIOUTCAPS caps,
-            UInt32 cbMidiOutCaps);
+            uint cbMidiOutCaps);
 
         [DllImport("winmm.dll", SetLastError = true)]
         private static extern MMRESULT midiOutOpen(out HMIDIOUT lphmo, UIntPtr uDeviceID,
@@ -439,11 +439,11 @@ namespace Redzen.Midi.Win32
 
         [DllImport("winmm.dll", SetLastError = true)]
         private static extern MMRESULT midiOutGetErrorText(MMRESULT mmrError, StringBuilder lpText,
-            UInt32 cchText);
+            uint cchText);
 
         [DllImport("winmm.dll", SetLastError = true)]
         private static extern MMRESULT midiInGetDevCaps(UIntPtr uDeviceID, out MIDIINCAPS caps,
-            UInt32 cbMidiInCaps);
+            uint cbMidiInCaps);
 
         [DllImport("winmm.dll", SetLastError = true)]
         private static extern MMRESULT midiInOpen(out HMIDIIN lphMidiIn, UIntPtr uDeviceID,
@@ -451,7 +451,7 @@ namespace Redzen.Midi.Win32
 
         [DllImport("winmm.dll", SetLastError = true)]
         private static extern MMRESULT midiInGetErrorText(MMRESULT mmrError, StringBuilder lpText,
-            UInt32 cchText);
+            uint cchText);
 
         #endregion    
     }

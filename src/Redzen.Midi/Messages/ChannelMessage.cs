@@ -6,7 +6,10 @@ namespace Redzen.Midi.Messages
     /// </summary>
     public abstract class ChannelMessage : Message
     {
-        readonly Channel _channel;
+        /// <summary>
+        /// Channel.
+        /// </summary>
+        public Channel Channel { get; }
 
         /// <summary>
         /// Constructs a channel message.
@@ -15,12 +18,7 @@ namespace Redzen.Midi.Messages
         protected ChannelMessage(Channel channel)
         {
             channel.Validate();
-            _channel = channel;
+            this.Channel = channel;
         }
-
-        /// <summary>
-        /// Channel.
-        /// </summary>
-        public Channel Channel { get { return _channel; } }
     }
 }

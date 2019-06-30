@@ -5,7 +5,7 @@ using Redzen.Midi.Win32;
 namespace Redzen.Midi.Devices
 {
     /// <summary>
-    /// Static class for enumerating avialbale MIDI input devices.
+    /// Static class for enumerating available MIDI input devices.
     /// </summary>
     public static class InputDevices
     {

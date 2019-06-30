@@ -85,8 +85,6 @@ namespace Redzen.Midi.Devices
             Close();
         }
 
-
-
         #endregion
 
         #region Public Methods [Send*]
@@ -111,18 +109,14 @@ namespace Redzen.Midi.Devices
         /// <param name="msg">Th emessage to send.</param>
         public void Send(Message msg)
         {
-            if(msg is NoteOnMessage)
+            if(msg is NoteMessage noteMsg)
             {
-                NoteOnMessage noteOnMsg = (NoteOnMessage)msg;
-                SendNoteOn(noteOnMsg.Channel, noteOnMsg.NoteId, noteOnMsg.Velocity);
-                return;
-            }
-
-            if(msg is NoteOffMessage)
-            {
-                NoteOffMessage noteOffMsg = (NoteOffMessage)msg;
-                SendNoteOn(noteOffMsg.Channel, noteOffMsg.NoteId, noteOffMsg.Velocity);
-                return;
+                if(noteMsg.NoteOn) {
+                    SendNoteOn(noteMsg.Channel, noteMsg.NoteId, noteMsg.Velocity);
+                }
+                else {
+                    SendNoteOff(noteMsg.Channel, noteMsg.NoteId, noteMsg.Velocity);
+                }
             }
         }
 

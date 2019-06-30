@@ -1,5 +1,4 @@
 ﻿using System;
-using Redzen.Midi.Win32;
 
 namespace Redzen.Midi.Devices
 {
@@ -10,11 +9,15 @@ namespace Redzen.Midi.Devices
     /// kinds of MidiMessages.
     public abstract class DeviceBase : IDisposable
     {
-        #region Instance Fields
+        #region Instance Fields / Auto Properties
 
-        string _name;
         protected UIntPtr _deviceId;
         protected bool _isOpen;
+
+        /// <summary>
+        /// The name of this device.
+        /// </summary>
+        public string Name { get; }
 
         #endregion
 
@@ -26,19 +29,7 @@ namespace Redzen.Midi.Devices
         /// <param name="name">The name of this device.</param>
         protected DeviceBase(string name)
         {
-            _name = name;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// The name of this device.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
+            this.Name = name;
         }
 
         #endregion

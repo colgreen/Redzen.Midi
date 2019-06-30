@@ -7,7 +7,7 @@ namespace Redzen.Midi.Sequencing
     /// </summary>
     public class SequenceGenerator
     {
-        IRandomSource _rng;
+        readonly IRandomSource _rng;
 
         #region Constructors
 
@@ -51,7 +51,7 @@ namespace Redzen.Midi.Sequencing
         public Sequence CreateRandom(Channel chan, int lengthInBeats, double probabilty, int quantizeTicks, int noteId)
         {
             Sequence seq = Sequence.CreateLengthInBeats(chan, lengthInBeats);
-            for(int i=0; i<seq.Length; i+=quantizeTicks)
+            for(int i=0; i < seq.Length; i += quantizeTicks)
             {
                 if(_rng.NextDouble() >= probabilty) {
                     continue;

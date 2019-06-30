@@ -124,26 +124,26 @@ namespace Redzen.Midi.Sequencing
         private void HandleNoteOffMessages()
         {
             // Find all notes scheduled to be off in this timestep.
-            LinkedListNode<LiveNote> currNode = _liveNoteList.First;
-            while(null != currNode && 1 == currNode.Value.TicksRemaining)
+            LinkedListNode<LiveNote> currNote = _liveNoteList.First;
+            while(null != currNote && 1 == currNote.Value.TicksRemaining)
             {
-                _noteOffList.Add(currNode.Value);
+                _noteOffList.Add(currNote.Value);
 
-                var removeNode = currNode;
-                currNode = currNode.Next;
+                var removeNode = currNote;
+                currNote = currNote.Next;
                 _liveNoteList.Remove(removeNode);
             }
 
             // Decrement time remaining for all remaining live notes.
-            while(null != currNode)
+            while(null != currNote)
             {
-                currNode.Value.TicksRemaining--;
-                currNode = currNode.Next;
+                currNote.Value.TicksRemaining--;
+                currNote = currNote.Next;
             }
 
             // Send all scheduled note-off messages.
             foreach(LiveNote note in _noteOffList) {
-                _outDev.Send(new NoteOffMessage(note.Channel, note.NoteId, 0));
+                _outDev.Send(new NoteMessage(note.Channel, false, note.NoteId, 0));
             }
 
             // Tidy up.
@@ -168,7 +168,7 @@ namespace Redzen.Midi.Sequencing
             foreach(SequenceNote seqNote in noteList)
             {
                 // Send MIDI message.
-                _outDev.Send(new NoteOnMessage(seq.Channel, seqNote.NoteId, seqNote.Velocity));
+                _outDev.Send(new NoteMessage(seq.Channel, true, seqNote.NoteId, seqNote.Velocity));
 
                 // Record what notes are live so that we can send a MIDI off message later.
                 RegisterLiveNote(seqNote, seq.Channel);
