@@ -5,6 +5,7 @@ using Redzen.Midi.Devices;
 using Redzen.Midi.NoteSets;
 using Redzen.Midi.Sequencing;
 using Redzen.Numerics;
+using Redzen.Random;
 using Redzen.Sorting;
 using RedZen.Midi;
 using RedzenMidiDrummer.Patterns;
@@ -26,11 +27,11 @@ namespace RedzenMidiDrummer
         int _noteId = 60;
         HashSet<int> _patternNoteSet = new HashSet<int>();
 
-        SequenceGenerator _seqGen = new SequenceGenerator();
+        readonly SequenceGenerator _seqGen = new SequenceGenerator();
 
-        Dictionary<string,NoteSet> _noteSetDict;
+        readonly Dictionary<string,NoteSet> _noteSetDict;
 
-        XorShiftRandom _rng = new XorShiftRandom();
+        readonly IRandomSource _rng = RandomDefaults.CreateRandomSource();
 
         #endregion
 

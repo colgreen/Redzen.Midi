@@ -1,4 +1,4 @@
-﻿using Redzen.Numerics;
+﻿using Redzen.Random;
 
 namespace Redzen.Midi.Sequencing
 {
@@ -7,7 +7,7 @@ namespace Redzen.Midi.Sequencing
     /// </summary>
     public class SequenceGenerator
     {
-        XorShiftRandom _rng;
+        IRandomSource _rng;
 
         #region Constructors
 
@@ -15,7 +15,7 @@ namespace Redzen.Midi.Sequencing
         /// Default constructor.
         /// </summary>
         public SequenceGenerator() {
-            _rng = new XorShiftRandom();
+            _rng = RandomDefaults.CreateRandomSource();
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Redzen.Midi.Sequencing
         /// </summary>
         /// <param name="seed">Random number generator seed.</param>
         public SequenceGenerator(int seed) {
-            _rng = new XorShiftRandom(seed);
+            _rng = RandomDefaults.CreateRandomSource();
         }
 
         #endregion
@@ -34,7 +34,7 @@ namespace Redzen.Midi.Sequencing
         /// Set the random number generator seed
         /// </summary>
         /// <param name="seed">Seed</param>
-        public void SetSeed(int seed)
+        public void SetSeed(ulong seed)
         {
             _rng.Reinitialise(seed);
         }
