@@ -233,11 +233,9 @@ namespace RedzenMidiDrummer
 
         private bool HandleCmd_AddPattern(char patternCh)
         {
-
             patternCh = char.ToLowerInvariant(patternCh);
 
-            Pattern pat;
-            if(!PatternBank.PatternsById.TryGetValue(patternCh.ToString(), out pat))
+            if(!PatternBank.PatternsById.TryGetValue(patternCh.ToString(), out Pattern pat))
             {
                 Console.WriteLine("");
                 Console.WriteLine($"Unrecognised pattern ID [{patternCh}]");
@@ -317,76 +315,74 @@ namespace RedzenMidiDrummer
                 case "u":
                 case "o":
                     return HandleCmd_NonNumericState(parts[0], parts[1]);
-                    
             }
             return false;
         }
 
         private bool HandleCmd_NumericState(string cmd, string valStr)
         {
-            int val;
-            if(!int.TryParse(valStr, out val)) {
+            if(!int.TryParse(valStr, out int val)) {
                 return false;
             }
 
             switch(cmd)
             {
-            case "c":
-                if(!IsInRange(val, 1, 17))
-                {
-                    Console.WriteLine($"invalid chan {val}; Range is 1-16.");
+                case "c":
+                    if(!IsInRange(val, 1, 17))
+                    {
+                        Console.WriteLine($"invalid chan {val}; Range is 1-16.");
+                        return true;
+                    }
+                    // Note. the Channel enum has Channel 1 == 0 (blame the MIDI spec!).
+                    _chan = val-1;
                     return true;
-                }
-                // Note. the Channel enum has Channel 1 == 0 (blame the MIDI spec!).
-                _chan = val-1;
-                return true;
 
-            case "lc":
-                if(!IsInRange(val, 0, 100000))
-                {
-                    Console.WriteLine($"invalid length {val}; Max len in clock ticks is 100,000");
-                    return false;
-                }
-                _seqLen = val;
-                Console.WriteLine($"len = {_seqLen} = {_seqLen / MidiConsts.ClocksPerBeat} beats.");
-                return true;
-
-            case "lb":
-                if(!IsInRange(val, 0, 100000))
-                {
-                    Console.WriteLine($"invalid length {val}; Max len in beats is 100,000");
+                case "lc":
+                    if(!IsInRange(val, 0, 100000))
+                    {
+                        Console.WriteLine($"invalid length {val}; Max len in clock ticks is 100,000");
+                        return false;
+                    }
+                    _seqLen = val;
+                    Console.WriteLine($"len = {_seqLen} = {_seqLen / MidiConsts.ClocksPerBeat} beats.");
                     return true;
-                }
-                _seqLen = val * MidiConsts.ClocksPerBeat;
-                Console.WriteLine($"len = {_seqLen} = {val} beats.");
-                return true;
 
-            case "q":
-                if(!IsInRange(val, 1, 25))
-                {
-                    Console.WriteLine($"invalid quantization {val}; Range is 1-24.");
+                case "lb":
+                    if(!IsInRange(val, 0, 100000))
+                    {
+                        Console.WriteLine($"invalid length {val}; Max len in beats is 100,000");
+                        return true;
+                    }
+                    _seqLen = val * MidiConsts.ClocksPerBeat;
+                    Console.WriteLine($"len = {_seqLen} = {val} beats.");
                     return true;
-                }
-                _quant = val;
-                return true;
 
-            case "n":
-                if(!IsInRange(val, 0, 128))
-                {
-                    Console.WriteLine($"invalid note {val}; Range is 0-127.");
+                case "q":
+                    if(!IsInRange(val, 1, 25))
+                    {
+                        Console.WriteLine($"invalid quantization {val}; Range is 1-24.");
+                        return true;
+                    }
+                    _quant = val;
                     return true;
-                }
-                _noteId = val;
-                return true;
 
-            case "p":
-                if(!IsInRange(val, 1, 1000))
-                {
-                    Console.WriteLine($"invalid probability {val}; Range is 1-1000.");
+                case "n":
+                    if(!IsInRange(val, 0, 128))
+                    {
+                        Console.WriteLine($"invalid note {val}; Range is 0-127.");
+                        return true;
+                    }
+                    _noteId = val;
                     return true;
-                }
-                _prob = 1.0 / val;
-                return true;
+
+                case "p":
+                    if(!IsInRange(val, 1, 1000))
+                    {
+                        Console.WriteLine($"invalid probability {val}; Range is 1-1000.");
+                        return true;
+                    }
+                    _prob = 1.0 / val;
+                    return true;
             }
             return false;
         }
@@ -449,9 +445,7 @@ namespace RedzenMidiDrummer
             {
                 SelectClockSource_PrintOptions();
 
-                int? bpm;
-                int? devIdx;
-                if(!SelectClockSource_SelectionOption(out bpm, out devIdx)) {
+                if(!SelectClockSource_SelectionOption(out int? bpm, out int? devIdx)) {
                     continue;
                 }
 
@@ -485,8 +479,7 @@ namespace RedzenMidiDrummer
             string line = Console.ReadLine().Trim().ToLowerInvariant();
 
             // Attempt to read as BPM.
-            int val;
-            if(int.TryParse(line, out val))
+            if(int.TryParse(line, out int val))
             {
                 if(val < 0 && val > 300)
                 {
@@ -525,8 +518,7 @@ namespace RedzenMidiDrummer
             {
                 SelectOutputDevice_PrintOptions();
 
-                int devIdx;
-                if(!SelectOutputDevice_SelectionOption(out devIdx)) {
+                if(!SelectOutputDevice_SelectionOption(out int devIdx)) {
                     continue;
                 }
 
@@ -575,7 +567,6 @@ namespace RedzenMidiDrummer
 
         #region Private Static Methods
 
-
         /// <summary>
         /// Split a command string. Commands may have two parts, the first part always consists of letters, the secondf part may be letters of numbers,
         /// and may be separated from teh first with an equals operator or a space. Here we just look for the first non-letter char, and skip any spaces or equals
@@ -612,8 +603,6 @@ namespace RedzenMidiDrummer
             parts[1] = parts[1].Trim('=', ' ');
             return parts;
         }
-
-
 
         private static bool IsInRange(int v, int min, int max)
         {
