@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace RedzenMidiDrummer.Patterns
 {
     public class PatternSequence
     {
         public double LengthFactor;
         public double QuantizationFactor;
-        public double ProbabilityFactor;
+        public double Probability;
 
-        public PatternSequence(double lengthFactor, double quantizationFactor, double probabilityFactor)
+        public PatternSequence(double lengthFactor, double quantizationFactor, double probability)
         {
             this.LengthFactor = lengthFactor;
             this.QuantizationFactor = quantizationFactor;
-            this.ProbabilityFactor = probabilityFactor;
+            this.Probability = probability;
         }
     }
 }

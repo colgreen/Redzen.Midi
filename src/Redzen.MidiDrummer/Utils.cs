@@ -79,19 +79,18 @@ namespace RedzenMidiDrummer
             {
                 string str = field.Trim();
 
-                int noteId;
-                if(int.TryParse(str, out noteId))
+                if(int.TryParse(str, out int noteId))
                 {
                     // TODO: use gen purpose validation code.
-                    if(noteId >= 0 && noteId <= 127) {
+                    if(noteId >= 0 && noteId <= 127)
+                    {
                         noteSet.Add(noteId);
                     }
                     // TODO: report problem.
                     continue;
                 }
-                
-                NoteSet ns;
-                if(noteSetDict.TryGetValue(str, out ns)) {
+
+                if(noteSetDict.TryGetValue(str, out NoteSet ns)) {
                     noteSet.UnionWith(ns.Notes);
                 }
                 // else 

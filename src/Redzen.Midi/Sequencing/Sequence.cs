@@ -52,7 +52,7 @@ namespace Redzen.Midi.Sequencing
         /// <summary>
         /// Indicates if the sequence is currently enabled.
         /// </summary>
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; set; } = true;
 
         #endregion
 

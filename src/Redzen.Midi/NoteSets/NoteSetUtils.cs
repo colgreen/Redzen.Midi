@@ -21,6 +21,7 @@ namespace Redzen.Midi.NoteSets
             noteSetList.Add(CreateNoteSet(typeof(AkaiXR20)));
             noteSetList.Add(CreateNoteSet(typeof(NordDrum2)));
             noteSetList.Add(CreateNoteSet(typeof(Volcabeats)));
+            noteSetList.Add(CreateNoteSet(typeof(Circuit)));
             noteSetList.Add(CreateNoteSet(typeof(Percussion)));
             return noteSetList;
         }

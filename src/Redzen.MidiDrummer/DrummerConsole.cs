@@ -258,7 +258,7 @@ namespace RedzenMidiDrummer
             foreach(PatternSequence patSeq in pat.PatternSequenceList)
             {
                 int len = Math.Max(1, (int)(_seqLen * patSeq.LengthFactor)) / MidiConsts.ClocksPerBeat;
-                double p = Math.Min(1.0, Math.Max(0.0, _prob * patSeq.ProbabilityFactor));
+                double p = Math.Min(1.0, Math.Max(0.0, patSeq.Probability));
                 int q = Math.Max(1, (int)(_quant * patSeq.QuantizationFactor));
                 int noteId = noteList[patIdx % noteCount];
 
@@ -659,7 +659,7 @@ namespace RedzenMidiDrummer
             Console.BackgroundColor = ConsoleColor.Blue;
             Console.WriteLine(" --- patterns ---");
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine(" ns=60 : assign pattern notes (e.g. ns=60,61-63 ns=nordrum2 ns=volcabeats)");
+            Console.WriteLine(" ns=60 : assign pattern notes (e.g. ns=60,61-63 ns=norddrum2 ns=volcabeats ns=circuit)");
             Console.WriteLine(" j     : print pattern notes");
             Console.WriteLine(" 1     : add pattern A");
             Console.WriteLine(" 2     : add pattern B");
