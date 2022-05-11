@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Redzen.Midi
+﻿namespace Redzen.Midi
 {
     /// <summary>
     /// MIDI instrument tyes; used in Program Change messages.

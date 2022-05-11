@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Redzen.Midi.Messages
+﻿namespace Redzen.Midi.Messages
 {
     /// <summary>
     /// System exclusive message.

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Redzen.Midi.Devices;
 using Redzen.Midi.Messages;
 
