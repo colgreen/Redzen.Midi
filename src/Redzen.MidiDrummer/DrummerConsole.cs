@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using Redzen;
 using Redzen.Midi;
 using Redzen.Midi.Devices;
 using Redzen.Midi.NoteSets;
 using Redzen.Midi.Sequencing;
 using Redzen.Random;
-using Redzen.Sorting;
 using RedZen.Midi;
 using RedzenMidiDrummer.Patterns;
 
@@ -250,7 +251,7 @@ namespace RedzenMidiDrummer
             }
 
             List<int> noteList = new List<int>(_patternNoteSet);
-            SortUtils.Shuffle(noteList, _rng);
+            SpanUtils.Shuffle(CollectionsMarshal.AsSpan(noteList), _rng);
 
             int noteCount = noteList.Count;
 
