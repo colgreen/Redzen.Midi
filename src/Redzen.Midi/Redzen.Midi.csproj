@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Redzen" Version="13.0.0" />
+    <PackageReference Include="Redzen" Version="16.0.0" />
   </ItemGroup>
 
 </Project>
